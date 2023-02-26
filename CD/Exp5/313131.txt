@@ -1,0 +1,676 @@
+﻿				EXPERIMENT 2
+ 	                     SPARSE MATRIX
+
+NAME:ABIN JS 
+CLASS:S3 R
+ROLL NO:5
+DATE:31-10-2022
+
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+void read_matrix(int a[][10], int *m, int *n);
+void print_matrix(int a[][10], int m, int n);
+void to_tuple(int a[][10], int b[][3], int m, int n);
+void to_transpose(int b[][3], int c[][3]);
+void print_tuple(int b[10][3]);
+void add_tuple(int a[][3], int b[][3], int sum[][3]);
+
+int main(void)
+{
+    int ch;
+    int a[10][10], b[10][10];
+    int tp1[20][3], tp2[20][3];
+    int trans1[20][3], trans2[20][3];
+    int sum[20][3];
+    int m1, n1, m2, n2;
+
+    printf("Matrix 1:\n");
+    read_matrix(a, &m1, &n1);
+    printf("Matrix 2:\n");
+    read_matrix(b, &m2, &n2);
+
+    printf("\nMatrix 1: \n");
+    print_matrix(a, m1, n1);
+    printf("\nMatrix 2: \n");
+    print_matrix(b, m2, n2);
+    while (1)
+    {
+    printf("1.TUPLE FORM\n2.SUM\n3.TRANSPOSE\n4.EXIT\n");
+    printf("Enter your choice 1/2/3/4");
+    scanf("%d",&ch);
+    
+    switch(ch)
+    {
+        case 1:
+        {
+            
+            to_tuple(a, tp1, m1, n1);
+            to_tuple(b, tp2, m2, n2);
+            printf("\nTuple form of matrix 1:\n");
+            print_tuple(tp1);
+            printf("\nTuple form of matrix 2:\n");
+            print_tuple(tp2);
+            break;
+        }
+        case 2:
+        {
+            add_tuple(tp1, tp2, sum);
+            printf("\nSum of tuple form of matrix 1 and matrix 2:\n");
+            print_tuple(sum);
+            break;
+
+        }
+        case 3:
+        {
+            to_transpose(tp1, trans1);
+            to_transpose(tp2, trans2);
+            printf("\nTranspose of tuple form of matrix 1:\n");
+            print_tuple(trans1);
+            printf("\nTranspose of tuple form of matrix 2:\n");
+            print_tuple(trans2);
+            break;
+        }
+        case 4:
+        {
+            exit(0);
+            break;
+        }
+    }
+    }
+
+
+    return 0;
+}
+
+void read_matrix(int a[][10], int *m, int *n)
+{
+    printf("Enter the number of rows: ");
+    scanf("%d", m);
+    printf("Enter the number of columns: ");
+    scanf("%d", n);
+    printf("Enter the elements of the matrix: ");
+    for (int i = 0; i < *m; i++)
+    {
+        for (int j = 0; j < *n; j++)
+        {
+            scanf("%d", &a[i][j]);
+        }
+    }
+}
+
+
+void print_matrix(int a[][10], int m, int n)
+{
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            printf("%d\t", a[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+
+void to_tuple(int mat[][10], int t[][3], int m, int n)
+{
+  
+    int k = 1;
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+          
+            if (mat[i][j] != 0)
+            {
+                t[k][0] = i;
+                t[k][1] = j;
+                t[k][2] = mat[i][j];
+                k++;
+            }
+        }
+    }
+
+
+    
+    t[0][0] = m;
+    t[0][1] = n;
+    t[0][2] = k - 1;
+}
+
+void to_transpose(int b[][3], int c[][3])
+{
+    
+    int k = b[0][2];
+    c[0][0] = b[0][1];
+    c[0][1] = b[0][0];
+    c[0][2] = k;
+    int x = 1;
+
+    for (int i = 1; i <= k; i++)
+    {
+        c[x][0] = b[i][1];
+        c[x][1] = b[i][0];
+        c[x][2] = b[i][2];
+        x++;
+    }
+
+   
+    for (int i = 1; i <= k; i++)
+    {
+        for (int j = 1; j <= k - i; j++)
+        {
+          
+            if (c[j][0] > c[j + 1][0])
+            {
+              
+                int temp = c[j][0];
+                c[j][0] = c[j + 1][0];
+                c[j + 1][0] = temp;
+
+                temp = c[j][1];
+                c[j][1] = c[j + 1][1];
+                c[j + 1][1] = temp;
+
+                temp = c[j][2];
+                c[j][2] = c[j + 1][2];
+                c[j + 1][2] = temp;
+            }
+        }
+    }
+}
+
+
+void print_tuple(int b[10][3])
+{
+	
+    int k = b[0][2];
+    printf("Row\tColumn\tValue\n");
+    for (int i = 0; i <= k; i++)
+    {
+    	if(b[i][2]!=0){
+    	
+        printf("%d\t%d\t%d\n", b[i][0], b[i][1], b[i][2]);
+        }
+    }
+}
+
+
+void add_tuple(int a[][3], int b[][3], int sum[][3])
+{
+	int s;
+    if (a[0][0] != b[0][0] || a[0][1] != b[0][1])
+    {
+        printf("The matrices cannot be added.\n");
+        return;
+    }
+
+    
+    int i = 1, j = 1, k = 1;
+    while (i <= a[0][2] && j <= b[0][2])
+    {
+       
+        if (a[i][0] == b[j][0])
+        {
+         
+            if (a[i][1] == b[j][1])
+            {
+              s=a[i][2] + b[j][2];
+               if(s!=0){
+                sum[k][0] = a[i][0];
+                sum[k][1] = a[i][1];
+                sum[k][2] = s;
+                k++;
+                }
+                i++;
+                j++;
+            }
+            else if (a[i][1] < b[j][1])
+            {
+              
+                sum[k][0] = a[i][0];
+                sum[k][1] = a[i][1];
+                sum[k][2] = a[i][2];
+                i++;
+                k++;
+            }
+          
+            else
+            {
+              
+                sum[k][0] = b[j][0];
+                sum[k][1] = b[j][1];
+                sum[k][2] = b[j][2];
+                j++;
+                k++;
+            }
+        }
+       
+        else if (a[i][0] < b[j][0])
+        {
+           
+            sum[k][0] = a[i][0];
+            sum[k][1] = a[i][1];
+            sum[k][2] = a[i][2];
+            i++;
+            k++;
+        }
+      
+        else
+        {
+           
+            sum[k][0] = b[j][0];
+            sum[k][1] = b[j][1];
+            sum[k][2] = b[j][2];
+            j++;
+            k++;
+        }
+    }
+  
+    while (i <= a[0][2])
+    {
+        sum[k][0] = a[i][0];
+        sum[k][1] = a[i][1];
+        sum[k][2] = a[i][2];
+        i++;
+        k++;
+    }
+  
+    while (j <= b[0][2])
+    {
+        sum[k][0] = b[j][0];
+        sum[k][1] = b[j][1];
+        sum[k][2] = b[j][2];
+        j++;
+        k++;
+    }
+
+    sum[0][0] = a[0][0];
+    sum[0][1] = a[0][1];
+    sum[0][2] = k - 1;
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				EXPERIMENT 3
+ 	                     CIRCULAR QUEUE
+
+NAME:ABIN JS 
+CLASS:S3 R
+ROLL NO:5
+DATE:31-10-2022
+
+
+#include <stdio.h>
+
+int front = -1, rear = -1;
+int size;
+int items[100];
+
+int is_full();
+int is_empty();
+void enqueue(int element);
+void dequeue();
+void print_queue();
+
+int main(void)
+{
+    printf("Enter the size of the array: ");
+    scanf("%d", &size);
+
+   
+    while(1)
+    {
+        int op, element;
+        printf("\n1. Insert an element\n2. Delete element\n3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &op);
+        switch (op)
+        {
+            case 1:
+                printf("\nEnter the element to be inserted: ");
+                scanf("%d", &element);
+                enqueue(element);
+                break;
+            case 2:
+                dequeue();
+                break;
+            case 3:
+                return 0;
+            default:
+                printf("Invalid choice\n");
+                break;
+        }
+    }
+}
+
+
+int is_full()
+{
+    if ((rear == size - 1 && front == 0) || (rear == front - 1)) return 1;
+    return 0;
+}
+
+int is_empty()
+{
+    if (front == -1) return 1;
+    return 0;
+}
+
+
+void enqueue(int element)
+{
+    if (is_full())
+    {
+        printf("Queue is full.\n");
+        return;
+    }
+    
+    if (front == -1) front = 0;
+    rear = (rear + 1) % size;
+    items[rear] = element;
+    printf("Inserted -> %d\n", element);
+    print_queue();
+}
+
+
+void dequeue()
+{
+    if (is_empty())
+    {
+        printf("Queue is empty.\n");
+        return;
+    }
+
+    int element = items[front];
+
+    if (front == rear)
+    {
+        front = -1;
+        rear = -1;
+    }
+    else
+    {
+        front = (front + 1) % size;
+    }
+
+    printf("Deleted -> %d\n", element);
+    print_queue();
+}
+
+
+void print_queue()
+{
+    int i;
+    if (is_empty())
+    {
+        printf("Queue is empty.\n");
+        return;
+    }
+
+    printf("Front = %d\n", front);
+    printf("Items: ");
+    for (i = front; i != rear; i = ((i + 1) % size))
+    {
+        printf("%d ", items[i]);
+    }
+    printf("%d", items[i]);
+    printf("\nRear = %d\n", rear);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				EXPERIMENT 4
+ 	                      QUEUE
+
+NAME:ABIN JS 
+CLASS:S3 R
+ROLL NO:5
+DATE:31-10-2022
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int size;
+int queue[50];
+int front = -1, rear = -1;
+
+void insert(int);
+int delete();
+void display();
+
+int main()
+{
+    printf("Enter the size of the queue: ");
+    scanf("%d", &size);
+
+    int choice, item;
+    while (1)
+    {
+        printf("\n1. Insert\n2. Delete\n3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        switch (choice)
+        {
+        case 1:
+            printf("\nEnter the item to be inserted: ");
+            scanf("%d", &item);
+            insert(item);
+            display();
+            break;
+        case 2:
+            item = delete();
+            printf("\nDeleted item is %d\n", item);
+            display();
+            break;
+        case 3:
+            exit(0);
+        default:
+            printf("Invalid choice\n");
+        }
+    }
+}
+
+void insert(int item)
+{
+    if (rear == size - 1)
+    {
+        printf("Queue Overflow\n");
+        return;
+    }
+    if (front == -1)
+        front = 0;
+    rear = rear + 1;
+    queue[rear] = item;
+}
+
+int delete()
+{
+    int item;
+    if (front == -1 || front > rear)
+    {
+        printf("Queue Underflow\n");
+        exit(0);
+    }
+    item = queue[front];
+    front = front + 1;
+    return item;
+}
+
+void display()
+{
+    int i;
+    if (front == -1)
+        printf("Queue is empty\n");
+    else
+    {
+        printf("Queue is: ");
+        for (i = front; i <= rear; i++)
+            printf("%d ", queue[i]);
+        printf("\nFront = %d, Rear = %d\n", front, rear);
+    }
+}
+
+
+
+
+				EXPERIMENT 5
+ 	                      	STACK
+
+NAME:ABIN JS 
+CLASS:S3 R
+ROLL NO:5
+DATE:31-10-2022
+
+
+
+#include<stdio.h>
+
+#include<stdlib.h>
+
+#define size 5
+
+int Top=-1;
+int a[size];
+
+void Push();
+void Pop();
+void show();
+
+int main(){
+ 	int ch;
+ 	printf("The operations performed on a stack");
+ 	while(1)
+ 	{
+ 		printf("\n1.push elements \n2.pop elements\n3.display the stack array\n4.exit\n");
+ 		printf("Enter the choice\n");
+ 		scanf("%d",&ch);
+ 		switch(ch)
+ 		{
+ 			case 1:
+ 				Push();
+ 				break;
+ 			
+ 			case 2:
+ 				Pop();
+ 				break;
+ 			
+ 			case 3:
+ 				show();
+ 				break;
+ 			case 4:
+ 				exit(0);
+ 				break;
+ 			default:printf("invalid choice\n");
+ 			
+ 		}
+ 	}
+}
+
+void Push(){
+	int x;
+	if(Top==size-1){
+		printf("OVER FLOW\n");
+	}
+	else
+	{
+		printf("Enter the Element to insert:");
+		scanf("%d",&x);
+		Top=Top+1;
+		a[Top]=x;
+	}
+}
+void Pop(){
+	if(Top==-1)
+	{
+		printf("UNDER FLOW\n");
+		
+	}
+	else{
+		printf("%d - deleted",a[Top]);
+		Top=Top-1;
+	}
+}
+void show()
+{
+	int i;
+	if(Top==-1)
+	{
+		printf("UNDRE FLOW\n");
+	}
+	for(i=Top;i>=0;i--)
+	{
+		printf("%d\t",a[i]);
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

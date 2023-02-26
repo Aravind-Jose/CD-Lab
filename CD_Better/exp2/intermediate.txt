@@ -1,0 +1,5 @@
+E->TV
+V->+TV|$
+T->FG
+G->*FVG|$
+F->(E)|a|b

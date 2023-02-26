@@ -1,0 +1,10 @@
+float pi=3.14;
+
+void main()
+{
+
+float c;
+
+c=6.28;
+printf("%d",6.28);
+}

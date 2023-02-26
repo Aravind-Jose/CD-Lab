@@ -1,0 +1,9 @@
+
+void main(){
+
+int line=7+9;
+if(4>6)
+{
+	printf("Good to know");
+}
+}
